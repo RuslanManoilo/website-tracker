@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { AppError } from "src/helpers/errors";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
@@ -13,6 +17,20 @@ export class AuthService {
     private jwtService: JwtService,
     private passwordService: PasswordService
   ) {}
+
+  private async validateUser(dto: CreateUserDto) {
+    const user = await this.userService.getUserByEmail(dto.email);
+    if (!user) throw new UnauthorizedException({ message: AppError.WRONG_DATA });
+
+    const passwordEquals = await this.passwordService.comparePassword(
+      dto.password,
+      user.password
+    );
+
+    if (user && passwordEquals) return user;
+
+    throw new UnauthorizedException({ message: AppError.WRONG_DATA });
+  }
 
   private async generateToken(user: User) {
     const payload = { email: user.email, id: user.id, roles: user.roles };
@@ -33,5 +51,10 @@ export class AuthService {
     });
 
     return this.generateToken(newUser);
+  }
+
+  async signin(dto: CreateUserDto) {
+    const user = await this.validateUser(dto);
+    return this.generateToken(user);
   }
 }
