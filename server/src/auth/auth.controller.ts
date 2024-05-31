@@ -48,4 +48,12 @@ export class AuthController {
   getSessionInfo(@SessionInfo() session: GetSessionInfoDto) {
     return session;
   }
+
+  // Використання RolesGuard для приватних маршрутів
+  // @Get("session")
+  // @Roles("ADMIN")
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // getSessionInfo(@SessionInfo() session: GetSessionInfoDto) {
+  //   return session;
+  // }
 }
