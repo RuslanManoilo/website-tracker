@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 import { Response } from "express";
 import { CookieService } from "./cookie.service";
 import { SessionInfo } from "./decorator/session-info.decorator";
-import { GetSessionInfoDto } from "./dto/session-info.dto";
+import { GetSessionInfoDto, SignInDto, SignUpDto } from "./dto";
 
 @Controller("auth")
 export class AuthController {
@@ -16,7 +15,7 @@ export class AuthController {
 
   @Post("signup")
   async signup(
-    @Body() userDto: CreateUserDto,
+    @Body() userDto: SignUpDto,
     @Res({ passthrough: true }) res: Response
   ) {
     const { token } = await this.authService.signup(userDto);
@@ -27,7 +26,7 @@ export class AuthController {
 
   @Post("signin")
   async signin(
-    @Body() userDto: CreateUserDto,
+    @Body() userDto: SignInDto,
     @Res({ passthrough: true }) res: Response
   ) {
     const { token } = await this.authService.signin(userDto);

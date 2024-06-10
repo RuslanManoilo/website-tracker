@@ -9,6 +9,7 @@ import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UsersService } from "src/users/users.service";
 import { PasswordService } from "./password.service";
 import { User } from "src/users/users.model";
+import { SignInDto, SignUpDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -39,7 +40,7 @@ export class AuthService {
     };
   }
 
-  async signup(dto: CreateUserDto) {
+  async signup(dto: SignUpDto) {
     const isExistUser = await this.userService.getUserByEmail(dto.email);
     if (isExistUser) throw new BadRequestException(AppError.USER_EXIST);
 
@@ -53,7 +54,7 @@ export class AuthService {
     return this.generateToken(newUser);
   }
 
-  async signin(dto: CreateUserDto) {
+  async signin(dto: SignInDto) {
     const user = await this.validateUser(dto);
     return this.generateToken(user);
   }
