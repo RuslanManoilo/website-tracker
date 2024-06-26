@@ -9,9 +9,9 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { Reflector } from "@nestjs/core";
 import { Request } from "express";
-import { CookieService } from "./cookie.service";
-import { AppError } from "src/helpers/errors";
-import { ROLES_KEY } from "./decorator/roles-auth.decorator";
+import { CookieService } from "../cookie.service";
+import { AppError } from "src/common/constants/errors";
+import { ROLES_KEY } from "src/common/decorators";
 
 @Injectable()
 export class RolesGuard implements CanActivate {

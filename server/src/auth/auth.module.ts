@@ -5,10 +5,11 @@ import { UsersModule } from "src/users/users.module";
 import { JwtModule } from "@nestjs/jwt";
 import { PasswordService } from "./password.service";
 import { CookieService } from "./cookie.service";
+import { GUARDS } from "./guards";
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, PasswordService, CookieService],
+  providers: [AuthService, PasswordService, CookieService, ...GUARDS],
   imports: [
     UsersModule,
     JwtModule.register({

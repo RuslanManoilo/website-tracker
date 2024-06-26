@@ -4,12 +4,12 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { AppError } from "src/helpers/errors";
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 import { UsersService } from "src/users/users.service";
 import { PasswordService } from "./password.service";
 import { User } from "src/users/users.model";
 import { SignInDto, SignUpDto } from "./dto";
+import { AppError } from "src/common/constants";
 
 @Injectable()
 export class AuthService {

@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { JwtAuthGuard } from "./jwt-auth.guard";
 import { Response } from "express";
 import { CookieService } from "./cookie.service";
-import { SessionInfo } from "./decorator/session-info.decorator";
+import { SessionInfo } from "../common/decorators/session-info.decorator";
 import { GetSessionInfoDto, SignInDto, SignUpDto } from "./dto";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Controller("auth")
 export class AuthController {
