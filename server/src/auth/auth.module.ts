@@ -6,20 +6,12 @@ import { JwtModule } from "@nestjs/jwt";
 import { PasswordService } from "./password.service";
 import { CookieService } from "./cookie.service";
 import { GUARDS } from "./guards";
+import { options } from "src/config";
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, PasswordService, CookieService, ...GUARDS],
-  imports: [
-    UsersModule,
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: "24h",
-      },
-    }),
-  ]
+  imports: [UsersModule, JwtModule.registerAsync(options())],
+  exports: [JwtModule],
 })
-
 export class AuthModule {}

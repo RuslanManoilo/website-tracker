@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from "@nestjs/common";
-import { AuthService } from "./auth.service";
+import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
+import { AuthService } from "./auth.service";
 import { CookieService } from "./cookie.service";
-import { SessionInfo } from "../common/decorators/session-info.decorator";
-import { GetSessionInfoDto, SignInDto, SignUpDto } from "./dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { SessionInfo } from "../common/decorators/session-info.decorator";
+import { SignInDto, SignUpDto } from "./dto";
+import { ISession } from "src/common/interfaces";
 
 @Controller("auth")
 export class AuthController {
@@ -18,10 +19,10 @@ export class AuthController {
     @Body() userDto: SignUpDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const { token } = await this.authService.signup(userDto);
-    this.cookieService.setToken(res, token);
+    const { accessToken } = await this.authService.signup(userDto);
+    this.cookieService.setToken(res, accessToken);
 
-    return { message: "User successfully registered" };
+    return { accessToken, message: "User successfully registered" };
   }
 
   @Post("signin")
@@ -29,22 +30,22 @@ export class AuthController {
     @Body() userDto: SignInDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const { token } = await this.authService.signin(userDto);
-    this.cookieService.setToken(res, token);
+    const { accessToken } = await this.authService.signin(userDto);
+    this.cookieService.setToken(res, accessToken);
 
-    return { message: "User successfully logged in" };
+    return { accessToken, message: "User successfully logged in" };
   }
 
   @Post("signout")
   @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
   signout(@Res({ passthrough: true }) res: Response) {
     this.cookieService.removeToken(res);
-    return { message: "User successfully logged out" };
   }
 
   @Get("session")
   @UseGuards(JwtAuthGuard)
-  getSessionInfo(@SessionInfo() session: GetSessionInfoDto) {
+  getSessionInfo(@SessionInfo() session: ISession) {
     return session;
   }
 
