@@ -1,14 +1,11 @@
-import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsToMany, Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import { Account } from "src/account/account.model";
+import { IUserCreationAttrs } from "src/common/interfaces";
 import { Role } from "src/roles/roles.model";
 import { UserRoles } from "src/user-roles/user-roles.model";
 
-interface UserCreationAttrs {
-  email: string;
-  password: string;
-}
-
 @Table({ tableName: "users" })
-export class User extends Model<User, UserCreationAttrs> {
+export class User extends Model<User, IUserCreationAttrs> {
   @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
   id: number;
 
@@ -17,6 +14,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
+
+  @HasOne(() => Account)
+  account: Account;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
