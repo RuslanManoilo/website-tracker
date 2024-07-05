@@ -1,4 +1,4 @@
 export interface IAccountCreationAttrs {
   readonly isBlockingEnabled: boolean;
-  readonly ownerId: number;
+  readonly owner: number;
 }

@@ -3,4 +3,5 @@ export const AppError = {
   WRONG_DATA: "Email or password is wrong",
   UNAUTHORIZED: "User is not authenticated",
   FORBIDDEN: "Forbidden resource",
+  ACCOUNT_NOT_FOUND: "Account not found",
 };

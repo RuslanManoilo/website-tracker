@@ -11,7 +11,7 @@ export class Account extends Model<Account, IAccountCreationAttrs> {
     isBlockingEnabled: boolean;
 
     @ForeignKey(() => User)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.INTEGER, unique: true })
     owner: number;
 
     @BelongsTo(() => User)

@@ -1,4 +1,4 @@
-import { BelongsToMany, Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Account } from "src/account/account.model";
 import { IUserCreationAttrs } from "src/common/interfaces";
 import { Role } from "src/roles/roles.model";
@@ -15,7 +15,11 @@ export class User extends Model<User, IUserCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @HasOne(() => Account)
+  @ForeignKey(() => Account)
+  @Column({ type: DataType.INTEGER, unique: true })
+  accountId: number;
+
+  @BelongsTo(() => Account)
   account: Account;
 
   @BelongsToMany(() => Role, () => UserRoles)
