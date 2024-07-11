@@ -3,6 +3,7 @@ import { Account } from "src/account/account.model";
 import { IUserCreationAttrs } from "src/common/interfaces";
 import { Role } from "src/roles/roles.model";
 import { UserRoles } from "src/user-roles/user-roles.model";
+import { WatchList } from "src/watch-list/watch-list.model";
 
 @Table({ tableName: "users" })
 export class User extends Model<User, IUserCreationAttrs> {
@@ -21,6 +22,13 @@ export class User extends Model<User, IUserCreationAttrs> {
 
   @BelongsTo(() => Account)
   account: Account;
+
+  @ForeignKey(() => WatchList)
+  @Column({ type: DataType.INTEGER, unique: true })
+  watchListId: number;
+
+  @BelongsTo(() => WatchList)
+  watchList: WatchList;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];

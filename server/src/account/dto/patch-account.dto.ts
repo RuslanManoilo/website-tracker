@@ -1,3 +1,3 @@
 export class PatchAccountDto {
-    readonly isBlockingEnabled?: boolean;
+    readonly isMonitoringEnabled?: boolean;
 }

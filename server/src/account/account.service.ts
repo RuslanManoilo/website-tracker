@@ -8,8 +8,8 @@ import { AppError } from "src/common/constants";
 export class AccountService {
   constructor(@InjectModel(Account) private accountDB: typeof Account) {}
 
-  async create(userId: number) {
-    return this.accountDB.create({ owner: userId, isBlockingEnabled: false });
+  async create(userId: number): Promise<Account> {
+    return this.accountDB.create({ owner: userId, isMonitoringEnabled: false });
   }
 
   async getAccount(userId: number): Promise<Account> {

@@ -8,7 +8,7 @@ export class Account extends Model<Account, IAccountCreationAttrs> {
     id: number;
 
     @Column({ type: DataType.BOOLEAN, defaultValue: false })
-    isBlockingEnabled: boolean;
+    isMonitoringEnabled: boolean;
 
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER, unique: true })
