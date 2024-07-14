@@ -4,4 +4,6 @@ export const AppError = {
   UNAUTHORIZED: "User is not authenticated",
   FORBIDDEN: "Forbidden resource",
   ACCOUNT_NOT_FOUND: "Account not found",
+  ITEM_NOT_FOUND: "Item does not exist",
+  ITEM_NOT_BELONG_TO_WATCH_LIST: "Item does not belong to this watch list",
 };

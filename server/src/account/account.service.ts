@@ -6,18 +6,18 @@ import { AppError } from "src/common/constants";
 
 @Injectable()
 export class AccountService {
-  constructor(@InjectModel(Account) private accountDB: typeof Account) {}
+  constructor(@InjectModel(Account) private accountModel: typeof Account) {}
 
   async create(userId: number): Promise<Account> {
-    return this.accountDB.create({ owner: userId, isMonitoringEnabled: false });
+    return this.accountModel.create({ owner: userId, isMonitoringEnabled: false });
   }
 
-  async getAccount(userId: number): Promise<Account> {
-    return this.accountDB.findOne({ where: { owner: userId } });
+  async getByUser(userId: number): Promise<Account> {
+    return this.accountModel.findOne({ where: { owner: userId } });
   }
 
   async patchAccount(userId: number, patch: PatchAccountDto): Promise<Account> {
-    const [numOfAffectedRows, [updatedAccount]] = await this.accountDB.update(
+    const [numOfAffectedRows, [updatedAccount]] = await this.accountModel.update(
       { ...patch },
       { where: { owner: userId }, returning: true }
     );

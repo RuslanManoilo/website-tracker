@@ -1,27 +1,31 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { User } from "./users.model";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { RolesService } from "src/roles/roles.service";
-import { Role } from "src/roles/roles.model";
 import { AccountService } from "src/account/account.service";
+import { WatchListService } from "src/watch-list/watch-list.service";
+import { User } from "./users.model";
+import { Role } from "src/roles/roles.model";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { UserRole } from "src/common/enums";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
-    private rolesService: RolesService,
-    private accountService: AccountService,
+    private readonly rolesService: RolesService,
+    private readonly accountService: AccountService,
+    private readonly watchListService: WatchListService
   ) {}
 
   async createUser(dto: CreateUserDto): Promise<User> {
     const newUser = await this.userRepository.create(dto);
     const role = await this.rolesService.getRoleByValue(UserRole.USER);
     const account = await this.accountService.create(newUser.id);
+    const watchList = await this.watchListService.create(newUser.id);
 
-    await newUser.update({ accountId: account.id});
     await newUser.$set("roles", [role.id]);
+    await newUser.update({ accountId: account.id});
+    await newUser.update({ watchListId: watchList.id});
 
     const user = await this.userRepository.findOne({
       where: { id: newUser.id },

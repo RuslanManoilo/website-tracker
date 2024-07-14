@@ -12,7 +12,7 @@ export class AccountController {
 
   @Get()
   getAccount(@SessionInfo() session: ISession) {
-    return this.accountService.getAccount(session.id);
+    return this.accountService.getByUser(session.id);
   }
 
   @Patch()
