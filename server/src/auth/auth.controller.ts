@@ -4,9 +4,11 @@ import { AuthService } from "./auth.service";
 import { CookieService } from "./cookie.service";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { SessionInfo } from "../common/decorators/session-info.decorator";
-import { SignInDto, SignUpDto } from "./dto";
-import { ISession } from "src/common/interfaces";
+import { SessionDto, SignInDto, SignUpDto } from "./dto";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { AppError } from "src/common/constants";
 
+@ApiTags("Authentication")
 @Controller("auth")
 export class AuthController {
   constructor(
@@ -15,6 +17,10 @@ export class AuthController {
   ) {}
 
   @Post("signup")
+  @ApiOperation({ summary: "User registration" })
+  @ApiResponse({ status: 201, schema: { example: { accessToken: "accessTokenExample1234567890", message: "User successfully registered" }}, description: "Successful operation" })
+  @ApiResponse({ status: 400, description: AppError.USER_EXIST })
+  @ApiResponse({ status: 401, description: AppError.UNAUTHORIZED })
   async signup(
     @Body() userDto: SignUpDto,
     @Res({ passthrough: true }) res: Response
@@ -26,6 +32,10 @@ export class AuthController {
   }
 
   @Post("signin")
+  @ApiOperation({ summary: "User authentication" })
+  @ApiResponse({ status: 201, schema: { example: { accessToken: "accessTokenExample1234567890", message: "User successfully logged in" }}, description: "Successful operation" })
+  @ApiResponse({ status: 400, description: AppError.WRONG_DATA })
+  @ApiResponse({ status: 401, description: AppError.UNAUTHORIZED })
   async signin(
     @Body() userDto: SignInDto,
     @Res({ passthrough: true }) res: Response
@@ -39,13 +49,21 @@ export class AuthController {
   @Post("signout")
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
+  @ApiBearerAuth("accessToken")
+  @ApiOperation({ summary: "Logout" })
+  @ApiResponse({ status: 204, description: "Successful operation" })
+  @ApiResponse({ status: 401, description: AppError.UNAUTHORIZED })
   signout(@Res({ passthrough: true }) res: Response) {
     this.cookieService.removeToken(res);
   }
 
   @Get("session")
   @UseGuards(JwtAuthGuard)
-  getSessionInfo(@SessionInfo() session: ISession) {
+  @ApiBearerAuth("accessToken")
+  @ApiOperation({ summary: "Get session info" })
+  @ApiResponse({ status: 200, type: SessionDto, description: "Successful operation" })
+  @ApiResponse({ status: 401, description: AppError.UNAUTHORIZED })
+  getSessionInfo(@SessionInfo() session: SessionDto) {
     return session;
   }
 

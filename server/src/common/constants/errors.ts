@@ -1,7 +1,7 @@
 export const AppError = {
   USER_EXIST: "User with this email exist",
   WRONG_DATA: "Email or password is wrong",
-  UNAUTHORIZED: "User is not authenticated",
+  UNAUTHORIZED: "Unauthorized",
   FORBIDDEN: "Forbidden resource",
   ACCOUNT_NOT_FOUND: "Account not found",
   ITEM_NOT_FOUND: "Item does not exist",

@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PatchAccountDto } from "./dto/patch-account.dto";
 import { InjectModel } from "@nestjs/sequelize";
 import { Account } from "./account.model";
 import { AppError } from "src/common/constants";
+import { PatchAccountDto } from "./dto";
 
 @Injectable()
 export class AccountService {
