@@ -1,0 +1,425 @@
+openapi: 3.0.0
+paths:
+  /roles:
+    post:
+      operationId: RolesController_create
+      summary: Create role ( Admin only! )
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden resource
+      tags:
+        - Roles
+      security:
+        - accessToken: []
+  /auth/signup:
+    post:
+      operationId: AuthController_signup
+      summary: User registration
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpDto'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example:
+                  accessToken: accessTokenExample1234567890
+                  message: User successfully registered
+        '400':
+          description: User with this email exist
+        '401':
+          description: Unauthorized
+      tags:
+        - Authentication
+  /auth/signin:
+    post:
+      operationId: AuthController_signin
+      summary: User authentication
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInDto'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example:
+                  accessToken: accessTokenExample1234567890
+                  message: User successfully logged in
+        '400':
+          description: Email or password is wrong
+        '401':
+          description: Unauthorized
+      tags:
+        - Authentication
+  /auth/signout:
+    post:
+      operationId: AuthController_signout
+      summary: Logout
+      parameters: []
+      responses:
+        '204':
+          description: Successful operation
+        '401':
+          description: Unauthorized
+      tags:
+        - Authentication
+      security:
+        - accessToken: []
+  /auth/session:
+    get:
+      operationId: AuthController_getSessionInfo
+      summary: Get session info
+      parameters: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionDto'
+        '401':
+          description: Unauthorized
+      tags:
+        - Authentication
+      security:
+        - accessToken: []
+  /account:
+    get:
+      operationId: AccountController_getAccount
+      summary: Get account by user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+      tags:
+        - Account
+      security:
+        - accessToken: []
+    patch:
+      operationId: AccountController_patchAccount
+      summary: Monitoring on/off
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAccountDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+      tags:
+        - Account
+      security:
+        - accessToken: []
+  /watch-list:
+    get:
+      operationId: WatchListController_getWatchList
+      summary: Get watch list by user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchListDto'
+        '401':
+          description: Unauthorized
+      tags:
+        - Watch List
+      security:
+        - accessToken: []
+  /watch-list/item:
+    post:
+      operationId: WatchListController_addWatchListItem
+      summary: Add item to watch list
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddWatchListItemDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchListItemDto'
+        '401':
+          description: Unauthorized
+      tags:
+        - Watch List
+      security:
+        - accessToken: []
+  /watch-list/item/{id}:
+    delete:
+      operationId: WatchListController_deleteWatchListItem
+      summary: Remove item from watch list
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Item does not exist
+        '401':
+          description: Unauthorized
+      tags:
+        - Watch List
+      security:
+        - accessToken: []
+info:
+  title: Website Tracker
+  description: >-
+    API documentation for Website Tracker application. [GitHub
+    repository](https://github.com/RuslanManoilo/website-tracker)
+  version: 1.0.5
+  contact: {}
+tags:
+  - name: Authentication
+    description: Authentication endpoints
+  - name: Account
+    description: Account endpoints
+  - name: Watch List
+    description: Watch list endpoints
+  - name: Roles
+    description: Roles endpoints
+servers:
+  - url: http://localhost:8008
+components:
+  securitySchemes:
+    accessToken:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    CreateRoleDto:
+      type: object
+      properties:
+        value:
+          type: string
+          example: USER
+          description: Role value
+        description:
+          type: string
+          example: User
+          description: Role description
+      required:
+        - value
+        - description
+    Role:
+      type: object
+      properties:
+        id:
+          type: number
+          example: '111'
+          description: Primary key
+        value:
+          type: string
+          example: USER
+          description: Role value
+        description:
+          type: string
+          example: User
+          description: Role description
+      required:
+        - id
+        - value
+        - description
+    SignUpDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: alvaro_capibara@example.com
+        password:
+          type: string
+          example: qwerty12345
+      required:
+        - email
+        - password
+    SignInDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: alvaro_capibara@example.com
+        password:
+          type: string
+          example: qwerty12345
+      required:
+        - email
+        - password
+    SessionDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 69
+          description: Primary key
+        email:
+          type: string
+          example: alvaro_capibara@example.com
+        accountId:
+          type: number
+          example: 77
+        watchListId:
+          type: number
+          example: 69
+        roles:
+          example:
+            - value: USER
+              id: 88
+              description: Користувач
+              UserRoles:
+                id: 69
+                userId: 74
+                roleId: 88
+          type: array
+          items:
+            type: string
+        iat:
+          type: number
+          example: 1234567890
+        exp:
+          type: number
+          example: 1234567890
+      required:
+        - id
+        - email
+        - accountId
+        - watchListId
+        - roles
+        - iat
+        - exp
+    Account:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 69
+          description: Primary key
+        isMonitoringEnabled:
+          type: boolean
+          example: false
+        owner:
+          type: number
+          example: 77
+          description: Owner ID
+      required:
+        - id
+        - owner
+    PatchAccountDto:
+      type: object
+      properties:
+        isMonitoringEnabled:
+          type: boolean
+    WatchListDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 111
+          description: Primary key
+        ownerId:
+          type: number
+          example: 77
+          description: Owner ID
+        items:
+          example:
+            - id: 44
+              watchListId: 77
+              data: https://example.com
+              type: WEBSITE
+          description: Watch list items
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - ownerId
+        - items
+    AddWatchListItemDto:
+      type: object
+      properties:
+        type:
+          type: string
+          example: WEBSITE
+          description: Item type
+        data:
+          type: string
+          example: https://example.com
+          description: Item URL
+      required:
+        - type
+        - data
+    WatchListItemDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 111
+          description: Primary key
+        watchListId:
+          type: number
+          example: 77
+          description: Owner ID
+        data:
+          type: string
+          example: https://example.com
+          description: Item URL
+        type:
+          type: string
+          example: WEBSITE
+          description: Item type
+      required:
+        - id
+        - watchListId
+        - data
+        - type
