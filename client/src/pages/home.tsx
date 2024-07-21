@@ -1,12 +1,16 @@
-import { Inter } from "next/font/google";
 import { useQuery } from "@tanstack/react-query";
 import {
   authControllerGetSessionInfo,
   authControllerSignin,
 } from "@/shared/api/generated";
 import { useEffect } from "react";
-
-const inter = Inter({ subsets: ["latin"] });
+import { UIButton } from "@/shared/ui/ui-button";
+import { UITextField } from "@/shared/ui/ui-text-field";
+import { UISelectField } from "@/shared/ui/ui-select-field";
+import { UILink } from "@/shared/ui/ui-link";
+import { UISpinner } from "@/shared/ui/ui-spinner";
+import { UIPageSpinner } from "@/shared/ui/ui-page-spinner";
+import { UIHeader } from "@/shared/ui/ui-header";
 
 export function HomePage() {
   useEffect(() => {
@@ -23,9 +27,21 @@ export function HomePage() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`min-h-screen`}
     >
-      {data?.email}
+
+      <UIHeader right={data?.email} />
+      <UIButton variant="primary">Hello</UIButton>
+      <UIButton variant="secondary">TEST</UIButton>
+      <UIButton variant="outlined">Sign Out</UIButton>
+      <UIButton disabled variant="primary">Sign Out</UIButton>
+      <UITextField label="Email" inputProps={{placeholder: "Enter your Email"}} />
+      <UITextField error="Error" inputProps={{placeholder: "Enter your Email"}} />
+      <UITextField />
+      <UISelectField options={[{value: "1", label: "One"}, {value: "2", label: "Two"}]} />
+      <UILink href="/">LINK</UILink>
+      <UISpinner className="w-20 h-20 text-teal-600" />
+      {/* <UIPageSpinner /> */}
     </main>
   );
 }
