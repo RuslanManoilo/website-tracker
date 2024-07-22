@@ -110,7 +110,7 @@ export const authControllerSignup = (
   signUpDto: BodyType<SignUpDto>,
   options?: SecondParameter<typeof createInstance>,
 ) => {
-  return createInstance<unknown>(
+  return createInstance<void>(
     {
       url: `/auth/signup`,
       method: "POST",
@@ -128,7 +128,7 @@ export const authControllerSignin = (
   signInDto: BodyType<SignInDto>,
   options?: SecondParameter<typeof createInstance>,
 ) => {
-  return createInstance<unknown>(
+  return createInstance<void>(
     {
       url: `/auth/signin`,
       method: "POST",
