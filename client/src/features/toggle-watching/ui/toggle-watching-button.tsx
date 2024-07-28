@@ -1,4 +1,4 @@
-import { UIButton } from "@/shared/ui/ui-button";
+import { UIButton } from "@/shared/ui";
 import { useToggleWatching } from "../model/use-toggle-watching";
 
 export function ToggleWatchingButton() {

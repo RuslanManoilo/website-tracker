@@ -155,7 +155,12 @@ paths:
     get:
       operationId: WatchListController_getWatchList
       summary: Get watch list by user
-      parameters: []
+      parameters:
+        - name: q
+          required: false
+          in: query
+          schema:
+            type: string
       responses:
         '200':
           description: ''

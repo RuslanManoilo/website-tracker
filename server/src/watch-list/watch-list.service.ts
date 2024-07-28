@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+import { Op } from "sequelize";
 import { WatchList } from "./watch-list.model";
-import { AddWatchListItemDto } from "./dto";
+import { AddWatchListItemDto, WatchListQueryDto } from "./dto";
 import { WatchListItem } from "./watch-list-item.model";
 import { WatchItemType } from "src/common/enums";
 import { AppError } from "src/common/constants";
@@ -17,9 +18,15 @@ export class WatchListService {
     return await this.watchListModel.create({ ownerId: userId });
   }
 
-  async getByUser(watchListID: number): Promise<WatchList> {
+  async getByUser(watchListID: number, query: WatchListQueryDto): Promise<WatchList> {
     return await this.watchListModel.findByPk(watchListID, {
-      include: [WatchListItem],
+      include: [
+        {
+          model: WatchListItem,
+          where: query.q ? { data: { [Op.iLike]: `%${query.q}%` } } : undefined,
+          order: [["createdAt", "DESC"]],
+        }
+      ],
     });
   }
 

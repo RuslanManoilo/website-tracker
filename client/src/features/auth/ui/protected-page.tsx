@@ -1,6 +1,6 @@
 import { useSessionQuery } from "@/entities/session/queries";
 import { ROUTES } from "@/shared/constants/routes";
-import { UIPageSpinner } from "@/shared/ui/ui-page-spinner";
+import { UIPageSpinner } from "@/shared/ui";
 import { useRouter } from "next/router";
 import { PropsWithChildren, ReactElement } from "react";
 

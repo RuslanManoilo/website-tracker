@@ -1,4 +1,4 @@
-import { UIButton } from "@/shared/ui/ui-button";
+import { UIButton } from "@/shared/ui";
 import { useSignOutForm } from "../model/use-sign-out-form";
 
 export function SignOutButton() {

@@ -6,11 +6,12 @@ import {
   HttpCode,
   Param,
   Post,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { WatchListService } from "./watch-list.service";
-import { AddWatchListItemDto, WatchListDto, WatchListItemDto } from "./dto";
+import { AddWatchListItemDto, WatchListDto, WatchListItemDto, WatchListQueryDto } from "./dto";
 import { SessionInfo } from "src/common/decorators";
 import { SessionDto } from "src/auth/dto";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -27,8 +28,8 @@ export class WatchListController {
   @ApiOperation({ summary: "Get watch list by user" })
   @ApiResponse({ status: 200, type: WatchListDto })
   @ApiResponse({ status: 401, description: AppError.UNAUTHORIZED })
-  getWatchList(@SessionInfo() session: SessionDto) {
-    return this.watchListService.getByUser(session.watchListId);
+  getWatchList(@Query() query: WatchListQueryDto, @SessionInfo() session: SessionDto) {
+    return this.watchListService.getByUser(session.watchListId, query);
   }
 
   @Post("item")

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export function UiLogo({ className }: { className?: string }) {
+export function UILogo({ className }: { className?: string }) {
   return (
     <div className={clsx(className, "flex items-center gap-2 text-xl")}>
       <EYE className="w-12 h-12" />

@@ -7,6 +7,10 @@
  */
 import { createInstance } from "./api-instance";
 import type { BodyType } from "./api-instance";
+export type WatchListControllerGetWatchListParams = {
+  q?: string;
+};
+
 export interface WatchListItemDto {
   /** Item URL */
   data: string;
@@ -29,7 +33,7 @@ export interface WatchListDto {
   /** Primary key */
   id: number;
   /** Watch list items */
-  items: string[];
+  items: WatchListItemDto[];
   /** Owner ID */
   ownerId: number;
 }
@@ -194,10 +198,11 @@ export const accountControllerPatchAccount = (
  * @summary Get watch list by user
  */
 export const watchListControllerGetWatchList = (
+  params?: WatchListControllerGetWatchListParams,
   options?: SecondParameter<typeof createInstance>,
 ) => {
   return createInstance<WatchListDto>(
-    { url: `/watch-list`, method: "GET" },
+    { url: `/watch-list`, method: "GET", params },
     options,
   );
 };

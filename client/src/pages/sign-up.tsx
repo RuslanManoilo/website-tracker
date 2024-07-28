@@ -1,6 +1,6 @@
 import { SignUpForm } from "@/features/auth";
+import { UIHeader } from "@/shared/ui";
 import { UIFormPageLayout } from "@/shared/ui/layouts/ui-form-page-layout";
-import { UIHeader } from "@/shared/ui/ui-header";
 
 export function SignUpPage() {
   return (

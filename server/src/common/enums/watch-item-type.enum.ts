@@ -1,3 +1,3 @@
 export enum WatchItemType {
-    WEBSITE = "WEBSITE",
+    WEBSITE = "WebSite",
 }
